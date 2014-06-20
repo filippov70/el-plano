@@ -30,7 +30,7 @@ and open the template in the editor.
                 
                 var json_data = 'tomskij_rayon.geojson';
                 var json_data_pt = 'tomskij_rayon_pt.geojson';
-                var geojson = new OpenLayers.Format.GeoJSON();
+                
                 //var features = geojson.read(json_data);
                 
                 // leaflet
@@ -38,10 +38,21 @@ and open the template in the editor.
                 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(llmap);
+                $.getJSON(json_data, function(data) {
+                    console.log("geojson file loaded");
+                    console.log(data);
+                    //When GeoJSON is loaded
+                    var geojsonLayer = new L.GeoJSON(data);	//New GeoJSON layer
+                    llmap.addLayer(geojsonLayer);	//Add layer to map	
+
+                });
+
                 
                 // ol2
                 var olmap = new OpenLayers.Map('olmap');
                 var osml = new OpenLayers.Layer.OSM();
+                
+                var geojson = new OpenLayers.Format.GeoJSON();
                 var geojson_layer = new OpenLayers.Layer.Vector("GeoJSON", {
                     strategies: [new OpenLayers.Strategy.Fixed()],
                     protocol: new OpenLayers.Protocol.HTTP({
@@ -61,7 +72,7 @@ and open the template in the editor.
                 var coordTransform = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"),
                     new OpenLayers.Projection("EPSG:3857"));
                     
-                olmap.addLayers([osml, geojson_layer, geojson_layer_pt]);
+                olmap.addLayers([osml, geojson_layer/*, geojson_layer_pt*/]);
                 olmap.setCenter(coordTransform, scale);
             }
         </script>
