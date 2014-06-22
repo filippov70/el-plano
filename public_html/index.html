@@ -34,21 +34,22 @@ and open the template in the editor.
                 //var features = geojson.read(json_data);
                 
                 // leaflet
+                var lldate = new Date();
                 var llmap = L.map('llmap').setView([lat, lon], scale);
                 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(llmap);
                 $.getJSON(json_data, function(data) {
-                    console.log("geojson file loaded");
-                    console.log(data);
                     //When GeoJSON is loaded
                     var geojsonLayer = new L.GeoJSON(data);	//New GeoJSON layer
                     llmap.addLayer(geojsonLayer);	//Add layer to map	
 
                 });
+                console.log('Leaflet ' + (new Date() - lldate));
 
                 
                 // ol2
+                var oldate = new Date();
                 var olmap = new OpenLayers.Map('olmap');
                 var osml = new OpenLayers.Layer.OSM();
                 
@@ -74,6 +75,7 @@ and open the template in the editor.
                     
                 olmap.addLayers([osml, geojson_layer/*, geojson_layer_pt*/]);
                 olmap.setCenter(coordTransform, scale);
+                console.log('OpenLayers ' + (new Date() - oldate));
             }
         </script>
     </head>
