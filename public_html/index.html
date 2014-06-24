@@ -19,13 +19,13 @@ and open the template in the editor.
         <script type="text/javascript" src="js/leaflet/leaflet.js"></script>
         <script type="text/javascript" src="js/openlayers/OpenLayers.js"></script>
         <script>
-            $(function() {
-                $( "#mainview" ).tabs();
-            });
+//            $(function() {
+//                $( "#mainview" ).tabs();
+//            });
             
             function init() {
-                var lat = 56.0;
-                var lon = 87.0;
+                var lat = 56.3;
+                var lon = 86;
                 var scale = 7;
                 
                 var json_data = 'tomskij_rayon.geojson';
@@ -53,7 +53,7 @@ and open the template in the editor.
                 var olmap = new OpenLayers.Map('olmap');
                 var osml = new OpenLayers.Layer.OSM();
                 
-                var geojson = new OpenLayers.Format.GeoJSON();
+                //var geojson = new OpenLayers.Format.GeoJSON();
                 var geojson_layer = new OpenLayers.Layer.Vector("GeoJSON", {
                     strategies: [new OpenLayers.Strategy.Fixed()],
                     protocol: new OpenLayers.Protocol.HTTP({
@@ -86,26 +86,12 @@ and open the template in the editor.
             <li><a href="#tabs-ll">Leaflet</a></li>
         </ul>
         <div id="tabs-ol">
-            <ul>
-                <li>WMS-отображение</li>
-                <li>WFS-рендеринг</li>
-                <li>TMS-отображение</li>
-                <li>Различные подложки</li>
-                <li>Кластеризация маркеров</li>
-                <li>Редактирование векторных данных</li>
-            </ul>
-            <div id="olmap" style="height: 600px; width: 800px"></div>
+
+            <div id="olmap" style="height: 400px; width: 800px"></div>
         </div>
             <div id="tabs-ll">
-                <ul>
-                    <li>WMS-отображение</li>
-                    <li>WFS-рендеринг</li>
-                    <li>TMS-отображение</li>
-                    <li>Различные подложки</li>
-                    <li>Кластеризация маркеров</li>
-                    <li>Редактирование векторных данных</li>
-                </ul>
-                <div id="llmap" style="height: 600px; width: 800px"></div>
+
+                <div id="llmap" style="height: 400px; width: 800px"></div>
             </div>    
         </div>
     </body>
