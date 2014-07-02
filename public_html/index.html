@@ -6,107 +6,40 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Сравнение webGIS-библиотек</title>
+        <title>EL PLANO</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <link rel="stylesheet" href="js/jqueryui/css/jquery-ui.css"> 
-        <link rel="stylesheet" href="js/leaflet/leaflet.css"> 
-        <link rel="stylesheet" href="js/openlayers/theme/default/style.css"> 
+        <link rel="stylesheet" href="elplano.css"> 
         
         <script type="text/javascript" src="js/jquery/jquery.js"></script>
         <script type="text/javascript" src="js/jqueryui/jquery-ui.js"></script>
-        <script type="text/javascript" src="js/leaflet/leaflet.js"></script>
-        <script type="text/javascript" src="js/openlayers/OpenLayers.js"></script>
-        <script>
-            $(function() {
-                $( "#mainview" ).tabs();
-            });
-            
-            function init() {
-                var lat = 56.0;
-                var lon = 87.0;
-                var scale = 7;
-                
-                var json_data = 'tomskij_rayon.geojson';
-                var json_data_pt = 'tomskij_rayon_pt.geojson';
-                
-                //var features = geojson.read(json_data);
-                
-                // leaflet
-                var lldate = new Date();
-                var llmap = L.map('llmap').setView([lat, lon], scale);
-                L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(llmap);
-                $.getJSON(json_data, function(data) {
-                    //When GeoJSON is loaded
-                    var geojsonLayer = new L.GeoJSON(data);	//New GeoJSON layer
-                    llmap.addLayer(geojsonLayer);	//Add layer to map	
-
-                });
-                console.log('Leaflet ' + (new Date() - lldate));
-
-                
-                // ol2
-                var oldate = new Date();
-                var olmap = new OpenLayers.Map('olmap');
-                var osml = new OpenLayers.Layer.OSM();
-                
-                var geojson = new OpenLayers.Format.GeoJSON();
-                var geojson_layer = new OpenLayers.Layer.Vector("GeoJSON", {
-                    strategies: [new OpenLayers.Strategy.Fixed()],
-                    protocol: new OpenLayers.Protocol.HTTP({
-                        url: json_data,
-                        format: new OpenLayers.Format.GeoJSON()
-                    })
-                });
-                var geojson_layer_pt = new OpenLayers.Layer.Vector("GeoJSON", {
-                    strategies: [new OpenLayers.Strategy.Fixed()],
-                    protocol: new OpenLayers.Protocol.HTTP({
-                        url: json_data_pt,
-                        format: new OpenLayers.Format.GeoJSON()
-                    })
-                });
-//                var veclayer = new OpenLayers.Layer.Vector('JSON Layer');
-//                veclayer.addFeatures(features);
-                var coordTransform = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"),
-                    new OpenLayers.Projection("EPSG:3857"));
-                    
-                olmap.addLayers([osml, geojson_layer/*, geojson_layer_pt*/]);
-                olmap.setCenter(coordTransform, scale);
-                console.log('OpenLayers ' + (new Date() - oldate));
-            }
-        </script>
+        
     </head>
-    <body onload="init();">
-        <div id="mainview">
-         <ul>
-            <li><a href="#tabs-ol">OpenLayers</a></li>
-            <li><a href="#tabs-ll">Leaflet</a></li>
-        </ul>
-        <div id="tabs-ol">
-            <ul>
-                <li>WMS-отображение</li>
-                <li>WFS-рендеринг</li>
-                <li>TMS-отображение</li>
-                <li>Различные подложки</li>
-                <li>Кластеризация маркеров</li>
-                <li>Редактирование векторных данных</li>
-            </ul>
-            <div id="olmap" style="height: 600px; width: 800px"></div>
-        </div>
-            <div id="tabs-ll">
-                <ul>
-                    <li>WMS-отображение</li>
-                    <li>WFS-рендеринг</li>
-                    <li>TMS-отображение</li>
-                    <li>Различные подложки</li>
-                    <li>Кластеризация маркеров</li>
-                    <li>Редактирование векторных данных</li>
-                </ul>
-                <div id="llmap" style="height: 600px; width: 800px"></div>
-            </div>    
+    <body>
+        <div style="width: 100%; height: 100%">
+            <div class="header">
+                <p class="header-caption">EL PLANO Автоматизация землеустройства</p>
+            </div>
+            <div class="main">
+                <div class="coord-area"><textarea style="width: 100%; height: 100%">
+                    Вставьте координаты в формате WKT
+                    </textarea>
+                </div>
+                <div class="button-area">
+                    <button class="ui-button-text buttons">из WKT</button>
+                    <button class="ui-button-text buttons">из GeoJSON</button>
+                    <button class="ui-button-text buttons">из CAD line</button>
+                    <button class="ui-button-text buttons">из MIF</button>
+                </div>
+                
+                
+            </div>
+            <div class="footer">
+                <textarea class="log"></textarea>
+                <div><p>Филиппов Владислав filippov70@gmail.com</p></div>
+            </div>
         </div>
     </body>
 </html>
