@@ -15,23 +15,24 @@ and open the template in the editor.
         
         <script type="text/javascript" src="js/jquery/jquery.js"></script>
         <script type="text/javascript" src="js/jqueryui/jquery-ui.js"></script>
-        
+        <script src="js/app.js" type="text/javascript"></script>
+        <script src="js/openlayers/OpenLayers.js" type="text/javascript"></script>
     </head>
-    <body>
+    <body onload="init()">
         <div style="width: 100%; height: 100%">
             <div class="header">
                 <p class="header-caption">EL PLANO Автоматизация землеустройства</p>
             </div>
             <div class="main">
                 <div class="coord-area"><textarea style="width: 100%; height: 100%">
-                    Вставьте координаты в формате WKT
+                    POLYGON((-5.85203657522859544 1.23857024106400582,-5.52784704904405721 2.31920199501246804,-4.25602660016625123 1.77057356608478722,-3.92352452202826285 0.93931837073981628,-4.70490440565253554 0.35743973399833662,-5.25353283458021636 0.44056525353283371,-5.85203657522859544 1.23857024106400582))
                     </textarea>
                 </div>
                 <div class="button-area">
-                    <button class="ui-button-text buttons">из WKT</button>
-                    <button class="ui-button-text buttons">из GeoJSON</button>
-                    <button class="ui-button-text buttons">из CAD line</button>
-                    <button class="ui-button-text buttons">из MIF</button>
+                    <button class="ui-button-text buttons wkt" onclick="parseWKT()">из WKT</button>
+                    <button class="ui-button-text buttons geojson">из GeoJSON</button>
+                    <button class="ui-button-text buttons cad">из CAD line</button>
+                    <button class="ui-button-text buttons mif">из MIF</button>
                 </div>
                 
                 
