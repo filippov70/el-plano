@@ -23,7 +23,7 @@
  */
 
 function parseWKT (){
-    shape = OpenLayers.Geometry.fromWKT($('.coord-area')[0].textContent);
+    var shape = OpenLayers.Geometry.fromWKT($('.coord-area')[0].textContent);
     if (shape.CLASS_NAME === 'OpenLayers.Geometry.Polygon') {
         console.log('OpenLayers.Geometry.Polygon');
     }
@@ -39,7 +39,23 @@ function parseWKT (){
     
     var newLink = $(this).find("a");
     newLink.attr("target", "_blank");
-    window.open(newLink.attr("href"));
+    var report = window.open(newLink.attr("href"));
+    //report.document.body.innerHTML = '<h1>Yes!</h1>';
+    writeCoordReport(report.document);
+}
+
+function writeCoordReport (newDocument) {
+    // css
+    
+    // html
+    newDocument.body.innerHTML = '<table class=\'coord-report\'></table>';
+    
+    var row = $('<tr/>');
+    row.addClass('coord-report-data-row');
+    row.append($('<td/>').html('some data'));
+
+    
+    $('.coord-report').append(row);
 }
 //require.config = {
 //    baseUrl: 'js',
