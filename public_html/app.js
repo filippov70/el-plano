@@ -40,51 +40,20 @@ function parseWKT (){
     var newLink = $(this).find("a");
     newLink.attr("target", "_blank");
     var report = window.open(newLink.attr("href"));
-    //report.document.body.innerHTML = '<h1>Yes!</h1>';
-    writeCoordReport(report.document);
-}
 
-function writeCoordReport (newDocument) {
+    report.document.body.innerHTML = getCoordReport(shape);
+    $('.coord-report').toggleClass('hide');
+};
+
+function getCoordReport (geom) {
     // css
     
     // html
-    newDocument.body.innerHTML = '<table class=\'coord-report\'></table>';
-    
+    var table = $('<table/>');
     var row = $('<tr/>');
     row.addClass('coord-report-data-row');
-    row.append($('<td/>').html('some data'));
-
-    
-    $('.coord-report').append(row);
-}
-//require.config = {
-//    baseUrl: 'js',
-//    paths: {
-//        openlayers: 'openlayers/OpenLayers',
-//        jquery: 'jquery/jquery'
-//    },
-//    shim: {
-//        openlayers : {
-//            exports: 'openlayers'
-//        }
-//    }
-//};
-//
-//require ([
-//    'wktParser', 
-//    'jquery'],
-//    function (wkt, $){
-//        console.log($);
-//        return {
-//            init : function () {
-//                $('document').ready(function () {
-//                    
-//                });
-//            },
-//
-//            parseWKT : function () { 
-//                wkt.parseWKT();
-//            }
-//        };
-//    }
-//);
+    row.append($('<td/>').html('<p>some data</p>'));
+    row.append($('<td/>').html('<p>some data</p>'));
+    table.append(row);
+   return table.html();
+};
