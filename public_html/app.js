@@ -22,24 +22,33 @@
  * THE SOFTWARE.
  */
 
+ var logger = null;
+ var geom = null;
+    
+ function init() {
+     logger = $('.log')[0];
+ }
+
 function parseWKT (){
-    var shape = OpenLayers.Geometry.fromWKT($('.coord-area')[0].textContent);
-    if (shape.CLASS_NAME === 'OpenLayers.Geometry.Polygon') {
-        console.log('OpenLayers.Geometry.Polygon');
+    var format = new ol.format.WKT();
+    var shape = format.readGeometry($('.coord-area')[0].textContent);
+    if (shape.getType() === 'Polygon') {
+        console.log('ol.geom.Polygon');
     }
-    else if (shape.CLASS_NAME === 'OpenLayers.Geometry.MutliPolgon') {
-        console.log('OpenLayers.Geometry.MutliPolgon');
+    else if (shape.getType() === 'MutliPolgon') {
+        console.log('ol.geom.MutliPolgon');
     }
     else {
         this.data = null;
     }
-    this.data = shape;
+    console.log(shape.getType());
+    geom = shape;
 
-    $('.log')[0].textContent = 'Площадь: ' + shape.getArea();
-    
-    var newLink = $(this).find("a");
-    newLink.attr("target", "_blank");
-    var report = window.open(newLink.attr("href"));
+    logger.textContent = 'Площадь объекта: ' + shape.getArea();
+
+    var newLink = $(this).find('a');
+    newLink.attr('target', '_blank');
+    var report = window.open(newLink.attr('href'));
 
     report.document.body.innerHTML = getCoordReport(shape);
     $('.coord-report').toggleClass('hide');
@@ -47,7 +56,7 @@ function parseWKT (){
 
 function getCoordReport (geom) {
     // css
-    
+
     // html
     var table = $('<table/>');
     var row = $('<tr/>');
