@@ -25,27 +25,30 @@
  var logger = null;
  var geom = null;
     
- function init() {
-     logger = $('.log')[0];
+ function log(msg) {
+    $('.log')[0].textValue += msg;
+    
  }
 
 function parseWKT (){
     var format = new ol.format.WKT();
     var shape = format.readGeometry($('.coord-area')[0].textContent);
     if (shape.getType() === 'Polygon') {
-        console.log('ol.geom.Polygon');
+        log('ol.geom.Polygon');
     }
     else if (shape.getType() === 'MutliPolgon') {
-        console.log('ol.geom.MutliPolgon');
+        log('ol.geom.MutliPolgon');
     }
     else {
         this.data = null;
     }
-    console.log(shape.getType());
+
     geom = shape;
 
-    logger.textContent = 'Площадь объекта: ' + shape.getArea();
-
+    log('Площадь объекта: ' + shape.getArea());
+    
+    
+    
     var newLink = $(this).find('a');
     newLink.attr('target', '_blank');
     var report = window.open(newLink.attr('href'));
