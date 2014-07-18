@@ -32,29 +32,40 @@
 function parseWKT (){
     var format = new ol.format.WKT();
     var shape = format.readGeometry($('.coord-area')[0].textContent);
-    if (shape.getType() === 'Polygon') {
-        log('ol.geom.Polygon');
-    }
-    else if (shape.getType() === 'MutliPolgon') {
-        log('ol.geom.MutliPolgon');
-    }
-    else {
-        this.data = null;
-    }
-
     geom = shape;
-
+    
     log('Площадь объекта: ' + shape.getArea());
-    
-    
-    
+
     var newLink = $(this).find('a');
     newLink.attr('target', '_blank');
+    parseGeom();
     //var report = window.open(newLink.attr('href'));
 
     //report.document.body.innerHTML = getCoordReport(shape);
     $('.coord-report').toggleClass('hide');
 };
+
+function parseGeom() {
+    if (geom.getType() === 'Polygon') {
+        log('Геометрия ol.geom.Polygon');
+        var coords = geom.getCoordinates();
+        $.each(coords, function (idx, val) {
+            parseLinearRing(val);
+        });
+    }
+    else if (geom.getType() === 'MutliPolgon') {
+        log('Геометрия ol.geom.MutliPolgon');
+    }
+    else {
+        log('Геометрия не распознана.');
+    }
+}
+
+function parseLinearRing(ring) {
+    $.each(ring, function (idx, val) {
+            log('X: '+ val[0] + ' Y:' + val[1]);
+        });
+}
 
 function getCoordReport (geom) {
     // css
