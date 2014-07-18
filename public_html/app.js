@@ -26,8 +26,7 @@
  var geom = null;
     
  function log(msg) {
-    $('.log')[0].textValue += msg;
-    
+    $('.log').val($('.log').val() + '\n' + msg);
  }
 
 function parseWKT (){
@@ -51,9 +50,9 @@ function parseWKT (){
     
     var newLink = $(this).find('a');
     newLink.attr('target', '_blank');
-    var report = window.open(newLink.attr('href'));
+    //var report = window.open(newLink.attr('href'));
 
-    report.document.body.innerHTML = getCoordReport(shape);
+    //report.document.body.innerHTML = getCoordReport(shape);
     $('.coord-report').toggleClass('hide');
 };
 
