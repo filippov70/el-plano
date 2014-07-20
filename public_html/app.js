@@ -38,13 +38,13 @@ function parseWKT (){
     
     log('Площадь объекта: ' + shape.getArea());
     pointNumber = 0;
-    table = $('<table/>');
+    table = $('<table></table>');
     parseGeom();
     var newLink = $(this).find('a');
     newLink.attr('target', '_blank');
     var report = window.open(newLink.attr('href'));
-    
-    report.document.body.innerHTML = table.html();
+    var newtable = table.html();
+    report.document.body.innerHTML = '<table>' + newtable + '</table>';
     $('.coord-report').toggleClass('hide');
 };
 
