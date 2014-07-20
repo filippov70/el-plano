@@ -38,25 +38,26 @@ function parseWKT (){
     
     log('Площадь объекта: ' + shape.getArea());
     pointNumber = 0;
-    var html = parseGeom();
+    table = $('<table/>');
+    parseGeom();
     var newLink = $(this).find('a');
     newLink.attr('target', '_blank');
     var report = window.open(newLink.attr('href'));
     
-    report.document.body.innerHTML = html;
+    report.document.body.innerHTML = table.html();
     $('.coord-report').toggleClass('hide');
 };
 
 function parseGeom() {
     if (geom.getType() === 'Polygon') {
-        log('Геометрия ol.geom.Polygon');
-        table = $('<table/>');
+        log('"Геометрия ol.geom.Polygon"');
+        
         createTableHeader();
         var coords = geom.getCoordinates();
         $.each(coords, function (idx, val) {
             parseLinearRing(idx, val);
         });
-        return table.html();
+                //return table.html();
     }
     else if (geom.getType() === 'MutliPolgon') {
         log('Геометрия ol.geom.MutliPolgon');
@@ -65,16 +66,19 @@ function parseGeom() {
         log('Геометрия не распознана.');
     }
 }
-
+// в openlayers у полигона первая точка дублируется в конце! 
 function parseLinearRing(index, ring) {
     log('Обрабатывается контур ' + (index+1));
     var data1 = [];
     var data2 = [];
+    var firstPoint;
+    ring.pop();
     // Первый (наружный) контур
     if (index === 0) {
         for(var i=0; i<ring.length; i++) {
             if (i===ring.length-1) {
-                data1.push(pointNumber++);
+                
+                data1.push(firstPoint);
                 data1.push(ring[i][0]);
                 data1.push(ring[i][1]);
                 data1.push('');
@@ -94,7 +98,12 @@ function parseLinearRing(index, ring) {
                 }));
             }
             else if (i<ring.length){
-                data1.push(pointNumber++);
+                ++pointNumber;
+                if (i == 0) {
+                    firstPoint = pointNumber;
+                }
+                
+                data1.push(pointNumber);
                 data1.push(ring[i][0]);
                 data1.push(ring[i][1]);
                 data1.push('');
@@ -114,6 +123,8 @@ function parseLinearRing(index, ring) {
                 })); 
             }
             createTableData(data1, data2);
+            data1 = [];
+            data2 = [];
         }
     }
     // Поседующие (дырки)
@@ -124,10 +135,12 @@ function parseLinearRing(index, ring) {
         data1.push('--');
         data1.push('--');
         createTableData(data1);
-        parseRing(ring);
+        data1 = [];
+//        parseRing(ring);
         for(var i=0; i<ring.length; i++) {
-            if (i===ring.length-2) {
-                data1.push(pointNumber++);
+            
+            if (i===ring.length-1) {
+                data1.push(firstPoint);
                 data1.push(ring[i][0]);
                 data1.push(ring[i][1]);
                 data1.push('');
@@ -147,7 +160,11 @@ function parseLinearRing(index, ring) {
                 }));
             }
             else {
-                data1.push(pointNumber++);
+                ++pointNumber;
+                if (i === 0) {
+                    firstPoint = pointNumber;
+                }
+                data1.push(pointNumber);
                 data1.push(ring[i][0]);
                 data1.push(ring[i][1]);
                 data1.push('');
@@ -167,6 +184,8 @@ function parseLinearRing(index, ring) {
                 })); 
             }
             createTableData(data1, data2);
+            data1 = [];
+            data2 = [];
         }
     }
     }
