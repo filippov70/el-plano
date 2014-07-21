@@ -22,42 +22,44 @@
  * THE SOFTWARE.
  */
 
- var logger = null;
- var geom = null;
- var table = null;
- var pointNumber = 0;
-    
- function log(msg) {
-    $('.log').val($('.log').val() + '\n' + msg);
- }
+var logger = null;
+var geom = null;
+var table = null;
+var pointNumber = 0;
 
-function parseWKT (){
+function log(msg) {
+    $('.log').val($('.log').val() + '\n' + msg);
+}
+
+function parseWKT() {
     var format = new ol.format.WKT();
     var shape = format.readGeometry($('.coord-area')[0].textContent);
     geom = shape;
-    
-    log('Площадь объекта: ' + shape.getArea());
+
+    log('Площадь объекта: ' + shape.getArea().toFixed(2));
     pointNumber = 0;
-    table = $('<table></table>');
+    
     parseGeom();
-    var newLink = $(this).find('a');
-    newLink.attr('target', '_blank');
-    var report = window.open(newLink.attr('href'));
+//    var newLink = $(this).find('a');
+//    newLink.attr('target', '_blank');
+    var report = window.open('coordreport.html');
     var newtable = table.html();
+    //report.document.head.innerHTML = '<link href=\"coord-report.css\" rel=\"stylesheet\" type=\"text/css\"/>';
     report.document.body.innerHTML = '<table>' + newtable + '</table>';
-    $('.coord-report').toggleClass('hide');
-};
+    //$('.coord-report').toggleClass('hide');
+}
 
 function parseGeom() {
     if (geom.getType() === 'Polygon') {
         log('"Геометрия ol.geom.Polygon"');
-        
+        table = $('<table></table>');
         createTableHeader();
         var coords = geom.getCoordinates();
-        $.each(coords, function (idx, val) {
+        table.append('<tbody>');
+        $.each(coords, function(idx, val) {
             parseLinearRing(idx, val);
         });
-                //return table.html();
+        //return table.html();
     }
     else if (geom.getType() === 'MutliPolgon') {
         log('Геометрия ol.geom.MutliPolgon');
@@ -68,59 +70,59 @@ function parseGeom() {
 }
 // в openlayers у полигона первая точка дублируется в конце! 
 function parseLinearRing(index, ring) {
-    log('Обрабатывается контур ' + (index+1));
+    log('Обрабатывается контур ' + (index + 1));
     var data1 = [];
     var data2 = [];
     var firstPoint;
     ring.pop();
     // Первый (наружный) контур
     if (index === 0) {
-        for(var i=0; i<ring.length; i++) {
-            if (i===ring.length-1) {
-                
+        for (var i = 0; i < ring.length; i++) {
+            if (i === ring.length - 1) {
+
                 data1.push(firstPoint);
                 data1.push(ring[i][0]);
                 data1.push(ring[i][1]);
-                data1.push('');
-                data1.push('');
+                data1.push(' ');
+                data1.push(' ');
 
-                data2.push('');
-                data2.push('');
-                data2.push('');
+                data2.push(' ');
+                data2.push(' ');
+                data2.push(' ');
                 data2.push('aaaaa');
                 data2.push(getLenth(
-                {
-                    x: ring[0][0],
-                    y: ring[0][1]
-                }, {
-                   x: ring[i][0],
-                   y: ring[i][1] 
+                        {
+                            x: ring[0][0],
+                            y: ring[0][1]
+                        }, {
+                    x: ring[i][0],
+                    y: ring[i][1]
                 }));
             }
-            else if (i<ring.length){
+            else if (i < ring.length) {
                 ++pointNumber;
                 if (i == 0) {
                     firstPoint = pointNumber;
                 }
-                
+
                 data1.push(pointNumber);
                 data1.push(ring[i][0]);
                 data1.push(ring[i][1]);
-                data1.push('');
-                data1.push('');
+                data1.push(' ');
+                data1.push(' ');
 
-                data2.push('');
-                data2.push('');
-                data2.push('');
+                data2.push(' ');
+                data2.push(' ');
+                data2.push(' ');
                 data2.push('aaaaa');
                 data2.push(getLenth(
-                {
-                    x: ring[i+1][0],
-                    y: ring[i+1][1]
-                }, {
-                   x: ring[i][0],
-                   y: ring[i][1] 
-                })); 
+                        {
+                            x: ring[i + 1][0],
+                            y: ring[i + 1][1]
+                        }, {
+                    x: ring[i][0],
+                    y: ring[i][1]
+                }));
             }
             createTableData(data1, data2);
             data1 = [];
@@ -136,27 +138,26 @@ function parseLinearRing(index, ring) {
         data1.push('--');
         createTableData(data1);
         data1 = [];
-//        parseRing(ring);
-        for(var i=0; i<ring.length; i++) {
-            
-            if (i===ring.length-1) {
+        for (var i = 0; i < ring.length; i++) {
+
+            if (i === ring.length - 1) {
                 data1.push(firstPoint);
                 data1.push(ring[i][0]);
                 data1.push(ring[i][1]);
-                data1.push('');
-                data1.push('');
+                data1.push(' ');
+                data1.push(' ');
 
-                data2.push('');
-                data2.push('');
-                data2.push('');
+                data2.push(' ');
+                data2.push(' ');
+                data2.push(' ');
                 data2.push('aaaaa');
                 data2.push(getLenth(
-                {
-                    x: ring[0][0],
-                    y: ring[0][1]
-                }, {
-                   x: ring[i][0],
-                   y: ring[i][1] 
+                        {
+                            x: ring[0][0],
+                            y: ring[0][1]
+                        }, {
+                    x: ring[i][0],
+                    y: ring[i][1]
                 }));
             }
             else {
@@ -167,95 +168,67 @@ function parseLinearRing(index, ring) {
                 data1.push(pointNumber);
                 data1.push(ring[i][0]);
                 data1.push(ring[i][1]);
-                data1.push('');
-                data1.push('');
+                data1.push(' ');
+                data1.push(' ');
 
-                data2.push('');
-                data2.push('');
-                data2.push('');
+                data2.push(' ');
+                data2.push(' ');
+                data2.push(' ');
                 data2.push('aaaaa');
                 data2.push(getLenth(
-                {
-                    x: ring[i+1][0],
-                    y: ring[i+1][1]
-                }, {
-                   x: ring[i][0],
-                   y: ring[i][1] 
-                })); 
+                        {
+                            x: ring[i + 1][0],
+                            y: ring[i + 1][1]
+                        }, {
+                    x: ring[i][0],
+                    y: ring[i][1]
+                }));
             }
             createTableData(data1, data2);
             data1 = [];
             data2 = [];
         }
     }
-    }
-//function parseRing(ring) {
-//    for(var i=0; i<ring.length; i++) {
-//        if (i===ring.length-2) {
-//           data1.push(pointNumber++);
-//           data1.push(ring[i][0]);
-//           data1.push(ring[i][1]);
-//           data1.push('');
-//           data1.push('');
-//
-//           data2.push('');
-//           data2.push('');
-//           data2.push('');
-//           data2.push('aaaaa');
-//           data2.push(getLenth(
-//           {
-//               x: ring[0][0],
-//               y: ring[0][1]
-//           }, {
-//              x: ring[i][0],
-//              y: ring[i][1] 
-//           }));
-//        }
-//        else {
-//           data[0] = pointNumber++; 
-//        }
-//        createTableData(data);
-//    }
-//}
+}
 
-function getLenth(point, nextPoint){
+function getLenth(point, nextPoint) {
     dx = nextPoint.x - point.x;
     dy = nextPoint.y - point.y;
-    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-};
+    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)).toFixed(2);
+}
 
-function getAngle(point, nextPoint){
+function getAngle(point, nextPoint) {
     return 'getAngle';
-};
+}
 
 function createTableHeader() {
-    var header = $('<th/>');
-    header.addClass('coord-report-data-header');
-    header.append($('<td/>').html('<p>№</p>'));
-    header.append($('<td/>').html('<p>X</p>'));
-    header.append($('<td/>').html('<p>Y</p>'));
-    header.append($('<td/>').html('<p>Дирекционный угол</p>'));
-    header.append($('<td/>').html('<p>Расстояние</p>'));
+    var header = $('<tr/>');
+    header.addClass('coord-table-header');
+    header.append($('<td/>').html('№'));
+    header.append($('<td/>').html('X'));
+    header.append($('<td/>').html('Y'));
+    header.append($('<td/>').html('Дирекционный угол'));
+    header.append($('<td/>').html('Расстояние'));
     table.append(header);
-};
+}
 
-function createTableData(data1, data2){
+function createTableData(data1, data2) {
     var row = $('<tr/>');
-    row.addClass('coord-report-data-row');
-    row.append($('<td/>').html('<p>'+ data1[0] +'</p>'));
-    row.append($('<td/>').html('<p>'+ data1[1] +'</p>'));
-    row.append($('<td/>').html('<p>'+ data1[2] +'</p>'));
-    row.append($('<td/>').html('<p>'+ data1[3] +'</p>'));
-    row.append($('<td/>').html('<p>'+ data1[4] +'</p>'));
+    row.addClass('coord-table-row');
+    row.append($('<td/>').html('<p>' + data1[0] + '</p>'));
+    row.append($('<td/>').html('<p>' + data1[1] + '</p>'));
+    row.append($('<td/>').html('<p>' + data1[2] + '</p>'));
+    row.append($('<td/>').html('<p>' + data1[3] + '</p>'));
+    row.append($('<td/>').html('<p>' + data1[4] + '</p>'));
     table.append(row);
-    if (data2){
+    if (data2) {
         var row1 = $('<tr/>');
-        row1.addClass('coord-report-data-row');
-        row1.append($('<td/>').html('<p>'+ data2[0] +'</p>'));
-        row1.append($('<td/>').html('<p>'+ data2[1] +'</p>'));
-        row1.append($('<td/>').html('<p>'+ data2[2] +'</p>'));
-        row1.append($('<td/>').html('<p>'+ data2[3] +'</p>'));
-        row1.append($('<td/>').html('<p>'+ data2[4] +'</p>'));
+        row1.addClass('coord-table-row');
+        row1.append($('<td/>').html('<p>' + data2[0] + '</p>'));
+        row1.append($('<td/>').html('<p>' + data2[1] + '</p>'));
+        row1.append($('<td/>').html('<p>' + data2[2] + '</p>'));
+        row1.append($('<td/>').html('<p>' + data2[3] + '</p>'));
+        row1.append($('<td/>').html('<p>' + data2[4] + '</p>'));
         table.append(row1);
     }
 }
