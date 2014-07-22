@@ -42,10 +42,11 @@ function parseWKT() {
     parseGeom();
 //    var newLink = $(this).find('a');
 //    newLink.attr('target', '_blank');
-    var report = window.open('coordreport.html');
-    var newtable = table.html();
-    //report.document.head.innerHTML = '<link href=\"coord-report.css\" rel=\"stylesheet\" type=\"text/css\"/>';
-    report.document.body.innerHTML = '<table>' + newtable + '</table>';
+    var report = window.open('coordreport.html'); 
+    report.onload = function () {
+        var newtable = table.html();
+        report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';  
+    };
     //$('.coord-report').toggleClass('hide');
 }
 
