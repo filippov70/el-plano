@@ -37,7 +37,7 @@ function parseWKT() {
     geom = shape;
 
     log('Площадь объекта: ' + shape.getArea().toFixed(2));
-    pointNumber = 0;
+    
     
     parseGeom();
 //    var newLink = $(this).find('a');
@@ -55,6 +55,7 @@ function parseGeom() {
     if (geom.getType() === 'Polygon') {
         log('"Геометрия ol.geom.Polygon"');
         table = $('<table></table>');
+        pointNumber = 0;
         createTableHeader();
         var coords = geom.getCoordinates();
         table.append('<tbody>');
@@ -79,11 +80,11 @@ function parseLinearRing(index, ring) {
     var prefix = 'н';
 
     if (index > 0) {
-        data1.push('--');
-        data1.push('--');
-        data1.push('--');
-        data1.push('--');
-        data1.push('--');
+        data1.push('—');
+        data1.push('—');
+        data1.push('—');
+        data1.push('—');
+        data1.push('—');
         createTableData(data1, data2);
         data1 = [];
         firstPointName = --pointNumber;
@@ -145,10 +146,14 @@ function createTableHeader() {
     var header = $('<tr/>');
     header.addClass('coord-table-header');
     header.append($('<td/>').html('№'));
-    header.append($('<td/>').html('X'));
-    header.append($('<td/>').html('Y'));
-    header.append($('<td/>').html('Дирекционный угол'));
-    header.append($('<td/>').html('Расстояние'));
+    var x = $('<td/>');
+    x.addClass('coord-td');
+    header.append(x.html('X, м'));
+    var y = $('<td/>');
+    y.addClass('coord-td');
+    header.append(y.html('Y, м'));
+    header.append($('<td/>').html('Дирекционный угол, ° \''));
+    header.append($('<td/>').html('Расстояние, м'));
     table.append(header);
 }
 

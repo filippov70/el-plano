@@ -36,12 +36,8 @@ table {
     border-collapse: collapse;
 }
 
-.num-td {
-    width: 20px;
-}
-
-.leng-td {
-    width: 100px;
+.coord-td {
+    width: 120px;
 }
 .coord-table-header {
     font-size: medium;
