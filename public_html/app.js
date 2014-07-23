@@ -161,7 +161,7 @@ function createTableData(data1, data2) {
     row.append($('<td/>').html('<span>' + data1[3] + '</span>'));
     row.append($('<td/>').html('<span>' + data1[4] + '</span>'));
     table.append(row);
-    if (data2 && data2.length < 0) {
+    if (data2 && data2.length > 0) {
         var row1 = $('<tr/>');
         row1.addClass('coord-table-row');
         row1.append($('<td/>').html('<span>' + data2[0] + '</span>'));
