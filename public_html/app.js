@@ -47,6 +47,7 @@ function parseWKT() {
         var newtable = table.html();
         report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';  
     };
+    report.focus();
     //$('.coord-report').toggleClass('hide');
 }
 
@@ -74,127 +75,65 @@ function parseLinearRing(index, ring) {
     log('Обрабатывается контур ' + (index + 1));
     var data1 = [];
     var data2 = [];
-    var firstPoint;
-    ring.pop();
-    // Первый (наружный) контур
-    if (index === 0) {
-        for (var i = 0; i < ring.length; i++) {
-            if (i === ring.length - 1) {
+    var firstPointName = ++pointNumber;
+    var prefix = 'н';
 
-                data1.push(firstPoint);
-                data1.push(ring[i][0]);
-                data1.push(ring[i][1]);
-                data1.push(' ');
-                data1.push(' ');
-
-                data2.push(' ');
-                data2.push(' ');
-                data2.push(' ');
-                data2.push('aaaaa');
-                data2.push(getLenth(
-                        {
-                            x: ring[0][0],
-                            y: ring[0][1]
-                        }, {
-                    x: ring[i][0],
-                    y: ring[i][1]
-                }));
-            }
-            else if (i < ring.length) {
-                ++pointNumber;
-                if (i == 0) {
-                    firstPoint = pointNumber;
-                }
-
-                data1.push(pointNumber);
-                data1.push(ring[i][0]);
-                data1.push(ring[i][1]);
-                data1.push(' ');
-                data1.push(' ');
-
-                data2.push(' ');
-                data2.push(' ');
-                data2.push(' ');
-                data2.push('aaaaa');
-                data2.push(getLenth(
-                        {
-                            x: ring[i + 1][0],
-                            y: ring[i + 1][1]
-                        }, {
-                    x: ring[i][0],
-                    y: ring[i][1]
-                }));
-            }
-            createTableData(data1, data2);
-            data1 = [];
-            data2 = [];
-        }
-    }
-    // Поседующие (дырки)
-    else {
+    if (index > 0) {
         data1.push('--');
         data1.push('--');
         data1.push('--');
         data1.push('--');
         data1.push('--');
-        createTableData(data1);
+        createTableData(data1, data2);
         data1 = [];
-        for (var i = 0; i < ring.length; i++) {
-
-            if (i === ring.length - 1) {
-                data1.push(firstPoint);
-                data1.push(ring[i][0]);
-                data1.push(ring[i][1]);
-                data1.push(' ');
-                data1.push(' ');
-
-                data2.push(' ');
-                data2.push(' ');
-                data2.push(' ');
-                data2.push('aaaaa');
-                data2.push(getLenth(
-                        {
-                            x: ring[0][0],
-                            y: ring[0][1]
-                        }, {
-                    x: ring[i][0],
-                    y: ring[i][1]
-                }));
-            }
-            else {
-                ++pointNumber;
-                if (i === 0) {
-                    firstPoint = pointNumber;
-                }
-                data1.push(pointNumber);
-                data1.push(ring[i][0]);
-                data1.push(ring[i][1]);
-                data1.push(' ');
-                data1.push(' ');
-
-                data2.push(' ');
-                data2.push(' ');
-                data2.push(' ');
-                data2.push('aaaaa');
-                data2.push(getLenth(
-                        {
-                            x: ring[i + 1][0],
-                            y: ring[i + 1][1]
-                        }, {
-                    x: ring[i][0],
-                    y: ring[i][1]
-                }));
-            }
-            createTableData(data1, data2);
-            data1 = [];
-            data2 = [];
+        firstPointName = --pointNumber;
+    }
+    for (var i = 0; i < ring.length; i++) { 
+        if (i < ring.length-1) {
+            data1.push(prefix + pointNumber);
+            ++pointNumber;
         }
+        else {
+            data1.push(prefix + firstPointName);
+        }
+        data1.push(ring[i][0]);
+        data1.push(ring[i][1]);
+        data1.push(' ');
+        data1.push(' ');
+
+        if (i < ring.length-1) {
+            data2.push(' ');
+            data2.push(' ');
+            data2.push(' ');
+            data2.push(getAngle(
+                {
+                    x: ring[i + 1][0],
+                    y: ring[i + 1][1]
+                },
+                {
+                    x: ring[i][0],
+                    y: ring[i][1]
+                }));
+            data2.push(getLenth(
+                {
+                    x: ring[i + 1][0],
+                    y: ring[i + 1][1]
+                }, 
+                {
+                    x: ring[i][0],
+                    y: ring[i][1]
+            }));
+        }
+        createTableData(data1, data2);
+        data1 = [];
+        data2 = [];
+
     }
 }
 
 function getLenth(point, nextPoint) {
-    dx = nextPoint.x - point.x;
-    dy = nextPoint.y - point.y;
+    var dx = nextPoint.x - point.x;
+    var dy = nextPoint.y - point.y;
     return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)).toFixed(2);
 }
 
@@ -216,20 +155,20 @@ function createTableHeader() {
 function createTableData(data1, data2) {
     var row = $('<tr/>');
     row.addClass('coord-table-row');
-    row.append($('<td/>').html('<p>' + data1[0] + '</p>'));
-    row.append($('<td/>').html('<p>' + data1[1] + '</p>'));
-    row.append($('<td/>').html('<p>' + data1[2] + '</p>'));
-    row.append($('<td/>').html('<p>' + data1[3] + '</p>'));
-    row.append($('<td/>').html('<p>' + data1[4] + '</p>'));
+    row.append($('<td/>').html('<span>' + data1[0] + '</span>'));
+    row.append($('<td/>').html('<span>' + data1[1] + '</span>'));
+    row.append($('<td/>').html('<span>' + data1[2] + '</spanp>'));
+    row.append($('<td/>').html('<span>' + data1[3] + '</span>'));
+    row.append($('<td/>').html('<span>' + data1[4] + '</span>'));
     table.append(row);
-    if (data2) {
+    if (data2 && data2.length < 0) {
         var row1 = $('<tr/>');
         row1.addClass('coord-table-row');
-        row1.append($('<td/>').html('<p>' + data2[0] + '</p>'));
-        row1.append($('<td/>').html('<p>' + data2[1] + '</p>'));
-        row1.append($('<td/>').html('<p>' + data2[2] + '</p>'));
-        row1.append($('<td/>').html('<p>' + data2[3] + '</p>'));
-        row1.append($('<td/>').html('<p>' + data2[4] + '</p>'));
+        row1.append($('<td/>').html('<span>' + data2[0] + '</span>'));
+        row1.append($('<td/>').html('<span>' + data2[1] + '</span>'));
+        row1.append($('<td/>').html('<span>' + data2[2] + '</span>'));
+        row1.append($('<td/>').html('<span>' + data2[3] + '</span>'));
+        row1.append($('<td/>').html('<span>' + data2[4] + '</span>'));
         table.append(row1);
     }
 }

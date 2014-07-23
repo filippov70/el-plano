@@ -26,18 +26,30 @@ THE SOFTWARE.
     Author     : filippov
 */
 
+
+td {
+  border: 2px #000000 solid;
+  padding: 1px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.num-td {
+    width: 20px;
+}
+
+.leng-td {
+    width: 100px;
+}
 .coord-table-header {
-    font-size: small;
+    font-size: medium;
     font-weight: bold;
-    border: #000000;
-    border-width: 3px;
-    border-style: solid;
     text-align:  center;
 }
 .coord-table-row {
-    font-size: small;
+    font-size: medium;
     font-weight: normal;
-    border: #000000;
-    border-width: 3px;
     text-align:  center;
 }
