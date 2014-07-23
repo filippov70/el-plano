@@ -71,6 +71,7 @@ function parseGeom() {
         log('Геометрия не распознана.');
     }
 }
+
 // в openlayers у полигона первая точка дублируется в конце! 
 function parseLinearRing(index, ring) {
     log('Обрабатывается контур ' + (index + 1));
@@ -106,7 +107,7 @@ function parseLinearRing(index, ring) {
             data2.push(' ');
             data2.push(' ');
             data2.push(' ');
-            data2.push(getAngle(
+            data2.push(getDirectionalAngle(
                 {
                     x: ring[i + 1][0],
                     y: ring[i + 1][1]
@@ -138,8 +139,49 @@ function getLenth(point, nextPoint) {
     return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)).toFixed(2);
 }
 
-function getAngle(point, nextPoint) {
-    return 'getAngle';
+function getDirectionalAngle(point, nextPoint) {
+    var dx = nextPoint.x - point.x;
+    var dy = nextPoint.y - point.y;
+    if (dx === 0) {
+        if (ddy < 0) {
+            return '270° 0,0\'';
+        }
+        else {
+            return '90° 0,0\'';
+        }
+    }
+    else {
+        var alfa = Math.abs(Math.atan(dy/dx) * (180/Math.PI));
+        var angle;
+        if (dx > 0 && dy > 0) {
+            angle = alfa;
+            return getDegreeAndMinit(angle);
+        }
+        else if (dx < 0 && dy > 0) {
+            angle = 180 - alfa;
+            return getDegreeAndMinit(angle);
+        }
+        else if (dx < 0 && dy < 0) {
+            angle = 180 + alfa;
+            return getDegreeAndMinit(angle);
+        }
+        else if (dx > 0 && dy < 0) {
+            angle = 360 + alfa;
+            return getDegreeAndMinit(angle);
+        }
+        else if (dx > 0 && dy === 0) {
+            return '0° 0\'';
+        }
+        else if (dx < 0 && dy === 0) {
+            return '180° 0\'';
+        }
+    }
+}
+
+function getDegreeAndMinit (angle) {
+    var a = Math.floor(angle);
+    var minit = (angle - a) * 60;
+    return a + '° ' + minit.toFixed(1) + '\'';
 }
 
 function createTableHeader() {
