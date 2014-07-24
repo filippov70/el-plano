@@ -183,7 +183,7 @@ function getDirectionalAngle(point, nextPoint) {
             return getDegreeAndMinit(angle);
         }
         else if (dx > 0 && dy < 0) {
-            angle = 360 + alfa;
+            angle = 360 - alfa;
             return getDegreeAndMinit(angle);
         }
         else if (dx > 0 && dy === 0) {
