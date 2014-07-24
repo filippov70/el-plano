@@ -42,12 +42,29 @@ function parseWKT() {
     parseGeom();
 //    var newLink = $(this).find('a');
 //    newLink.attr('target', '_blank');
-    var report = window.open('coordreport.html'); 
+    var report = window.open('coordreport.html', 'Report'); 
+    //http://javascript.ru/forum/jquery/5158-manipulyacii-vnutri-sozdannogo-okna-s-pomoshyu-jquery.html
+//    (function() {
+//            if(report.ready) {
+//                var newtable = table.html();
+//                report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
+//            } else {
+//                    setTimeout(arguments.callee, 20);
+//            }
+//    })();
     report.onload = function () {
         var newtable = table.html();
-        report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';  
+        //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
+        var data = $('#coord', report.document);
+        data.html('<table>' + newtable + '</table>');
+        return false;
     };
+//    $(report.document).ready(function(){
+//        var newtable = table.html();
+//        report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';  
+//    });
     report.focus();
+    
     //$('.coord-report').toggleClass('hide');
 }
 
