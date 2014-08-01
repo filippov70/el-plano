@@ -22,48 +22,60 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 /* 
-    Created on : Jul 21, 2014, 10:28:27 AM
+    Created on : Aug 1, 2014, 6:01:06 PM
     Author     : filippov
 */
 
 
-td {
-  border: 2px #000000 solid;
-  padding: 1px;
+.page {
+    border: 1px solid black;
+    height: 792px;
+    margin: 20px;
+    position: relative;
+    width: 612px;
 }
-
-table {
-    border-collapse: collapse;
+.page .content .column {
+    font-size: 10pt;
+    text-align: justify;
 }
-
-.coord-td {
-    width: 120px;
+.page .content .column blockquote {
+    background: none repeat scroll 0 0 #dedede;
+    border-left: 2px solid #999999;
+    clear: both;
+    margin: 4px 20px;
+    padding: 10px;
 }
-.coord-table-header {
-    font-size: medium;
-    font-weight: bold;
-    text-align:  center;
+.page .content .column img {
+    float: left;
+    margin: 10px;
 }
-.coord-table-row {
-    font-size: medium;
-    font-weight: normal;
-    text-align:  center;
+.page .content .column p {
+    margin: 10px 0;
+    padding: 0 10px;
 }
-
-.layout {
-    border-color: #515151;
-    border-width: thin;
-    border-style: dashed;
-    position: fixed;
-    width: 190mm;
-    height: 220mm;
-/*    -webkit-column-count: 4;
-    -webkit-column-gap: 10px; 
-    -webkit-column-rule: 0px dotted black;
-    -moz-column-count: 4;
-    -moz-column-gap: 10px;  
-    -moz-column-rule: 0px dotted black;
-    column-count: 2;
-    column-gap: 10px; 
-    column-rule: 0px dotted black;*/
+.page .content .column h1 {
+    padding: 0 10px;
+}
+.page .header {
+    font-family: helvetica,arial;
+    font-size: 18pt;
+    padding: 20px 0 0;
+    text-align: center;
+}
+.page .header hr, .page .footer hr {
+    width: 400px;
+}
+.page .footer {
+    text-align: center;
+}
+.page .footer span {
+    bottom: 10px;
+    position: absolute;
+    right: 10px;
+}
+#page_template {
+    display: none;
+}
+.enclosure {
+    border: 1px dashed black;
 }

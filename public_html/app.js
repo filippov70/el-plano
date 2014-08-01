@@ -25,24 +25,96 @@
 var logger = null;
 var geom = null;
 var table = null;
+var geodataTable = null;
 var pointNumber = 0;
 
 function log(msg) {
     $('.log').val($('.log').val() + '\n' + msg);
 }
 
+function createGeodataRepoprt() {
+    prepare();
+    var geodataReport = window.open('geodata.html', 'Geodata');
+    //var report = window.open('coordreport.html', 'Report');
+    geodataReport.onload = function () {
+        var newtable = geodataTable.html();
+        //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
+        var data = $('#data', geodataReport.document);
+        data.html('<table>' + newtable + '</table>');
+//        // the height of the content, discluding the header/footer
+//        var content_height = 652;
+//        // the beginning page number to show in the footer
+//        var page = 1;
+//        function buildPage(){
+//            if($('#data', geodataReport.document).contents().length > 0){
+//                // when we need to add a new page, use a jq object for a template
+//                // or use a long HTML string, whatever your preference
+//                $page = $("#page_template", geodataReport.document).clone().addClass("page").css("display", "block");
+//
+//                // append the page number to the footer
+//                $page.find(".footer span").append(page);
+//                $('body', geodataReport.document).append($page);
+//                page++;
+//
+//                // here is the columnizer magic
+//                $('#data', geodataReport.document).columnize({
+//                    columns: 2,
+//                    target: ".page:last .content",
+//                    overflow: {
+//                        height: content_height,
+//                        id: "#data",
+//                        doneFunc: function(){
+//                            console.log("done with page");
+//                            buildPage();
+//                        }
+//                    }
+//                });
+//            }
+//        }
+//        buildPage();
+        //return false;
+    };
+    geodataReport.focus();
+}
+
+function createReport() {
+    prepare();
+    var report = window.open('coordreport.html', 'Report');
+    report.onload = function () {
+        var newtable = table.html();
+        //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
+        var data = $('#coord', report.document);
+        data.html('<table>' + newtable + '</table>');
+        return false;
+    };
+    report.focus();
+}
+
+function prepare() {
+    var format = new ol.format.WKT();
+    var shape = format.readGeometry($('.coord-area')[0].textContent);
+    geom = shape;
+    log('Площадь объекта: ' + shape.getArea().toFixed(2));
+    table = $('<table></table>');
+    geodataTable = $('<table></table>');
+    //var geodataReport = window.open('geodata.html', 'Geodata');
+    parseGeom();
+}
+
+// depricated
 function parseWKT() {
     var format = new ol.format.WKT();
     var shape = format.readGeometry($('.coord-area')[0].textContent);
     geom = shape;
 
     log('Площадь объекта: ' + shape.getArea().toFixed(2));
-    
-    
+    table = $('<table></table>');
+    geodataTable = $('<table></table>');
     parseGeom();
 //    var newLink = $(this).find('a');
 //    newLink.attr('target', '_blank');
-    var report = window.open('coordreport.html', 'Report'); 
+    //var report = window.open('coordreport.html', 'Report'); 
+    
     //http://javascript.ru/forum/jquery/5158-manipulyacii-vnutri-sozdannogo-okna-s-pomoshyu-jquery.html
 //    (function() {
 //            if(report.ready) {
@@ -52,18 +124,19 @@ function parseWKT() {
 //                    setTimeout(arguments.callee, 20);
 //            }
 //    })();
-    report.onload = function () {
-        var newtable = table.html();
-        //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
-        var data = $('#coord', report.document);
-        data.html('<table>' + newtable + '</table>');
-        return false;
-    };
+//    report.onload = function () {
+//        var newtable = table.html();
+//        //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
+//        var data = $('#coord', report.document);
+//        data.html('<table>' + newtable + '</table>');
+//        return false;
+//    };
+    
 //    $(report.document).ready(function(){
 //        var newtable = table.html();
 //        report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';  
 //    });
-    report.focus();
+    //report.focus();
     
     //$('.coord-report').toggleClass('hide');
 }
@@ -71,9 +144,10 @@ function parseWKT() {
 function parseGeom() {
     if (geom.getType() === 'Polygon') {
         log('"Геометрия ol.geom.Polygon"');
-        table = $('<table></table>');
+        
         pointNumber = 0;
         createTableHeader();
+        createGeodataHeader();
         var coords = geom.getCoordinates();
         table.append('<tbody>');
         $.each(coords, function(idx, val) {
@@ -94,6 +168,8 @@ function parseLinearRing(index, ring) {
     log('Обрабатывается контур ' + (index + 1));
     var data1 = [];
     var data2 = [];
+    var geodata = [];
+    var geodataExp = [];
     var firstPointName = ++pointNumber;
     var prefix = 'н';
 
@@ -110,10 +186,12 @@ function parseLinearRing(index, ring) {
     for (var i = 0; i < ring.length; i++) { 
         if (i < ring.length-1) {
             data1.push(prefix + pointNumber);
+            geodata.push(prefix + pointNumber);
             ++pointNumber;
         }
         else {
             data1.push(prefix + firstPointName);
+            geodata.push(prefix + firstPointName);
         }
         data1.push(ring[i][0]);
         data1.push(ring[i][1]);
@@ -124,6 +202,15 @@ function parseLinearRing(index, ring) {
             data2.push(' ');
             data2.push(' ');
             data2.push(' ');
+            geodata.push(getDirectionalAngle(
+                {
+                    x: ring[i + 1][0],
+                    y: ring[i + 1][1]
+                },
+                {
+                    x: ring[i][0],
+                    y: ring[i][1]
+                }));
             data2.push(getDirectionalAngle(
                 {
                     x: ring[i + 1][0],
@@ -133,6 +220,15 @@ function parseLinearRing(index, ring) {
                     x: ring[i][0],
                     y: ring[i][1]
                 }));
+            geodata.push(getLenth(
+                {
+                    x: ring[i + 1][0],
+                    y: ring[i + 1][1]
+                }, 
+                {
+                    x: ring[i][0],
+                    y: ring[i][1]
+                }))    
             data2.push(getLenth(
                 {
                     x: ring[i + 1][0],
@@ -141,12 +237,13 @@ function parseLinearRing(index, ring) {
                 {
                     x: ring[i][0],
                     y: ring[i][1]
-            }));
+                }));
         }
         createTableData(data1, data2);
+        createGeodata(geodata);
         data1 = [];
         data2 = [];
-
+        geodata = [];
     }
 }
 
@@ -235,4 +332,21 @@ function createTableData(data1, data2) {
         row1.append($('<td/>').html('<span>' + data2[4] + '</span>'));
         table.append(row1);
     }
+}
+
+function createGeodataHeader() {
+    var header = $('<tr/>');
+    header.append($('<td/>').html('№'));
+    header.append($('<td/>').html('Дир. угол'));
+    header.append($('<td/>').html('Расст, м'));
+    geodataTable.append(header);
+}
+
+function createGeodata(geodata) {
+    var row1 = $('<tr/>');
+    row1.addClass('geodata-table-row');
+    row1.append($('<td/>').html('<span>' + geodata[0] + '</span>'));
+    row1.append($('<td/>').html('<span>' + geodata[1] + '</span>'));
+    row1.append($('<td/>').html('<span>' + geodata[2] + '</span>'));
+    geodataTable.append(row1);
 }
