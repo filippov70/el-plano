@@ -24,14 +24,13 @@ THE SOFTWARE.
 -->
 <html>
     <head>
-        <title>Ведомость координат</title>
+        <title>Геоданные</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="coord-report.css" rel="stylesheet" type="text/css"/>
         <link href="geodata.css" rel="stylesheet" type="text/css"/>
-        <script src="js/jquery.columnizer.js" type="text/javascript"></script>
-        <script src="js/jquery/jquery.js" type="text/javascript"></script>
-        <script src="app.js" type="text/javascript"></script>
+        
+        <script src="js/columnizer/jquery.columnizer.js" type="text/javascript"></script>
+        <script src="js/columnizer/jquery.js" type="text/javascript"></script>
         <script>
             $(function(){
                 // the height of the content, discluding the header/footer
@@ -64,15 +63,18 @@ THE SOFTWARE.
                         });
                     }
                 }
-                setTimeout(buildPage, 1000);
-            });
+                setTimeout(buildPage, 3000);
+		});
         </script>
     </head>
     <body>
+       <div class="tools">
+            <button onclick="buildPage()">Go!</button>
+        </div>
         <div id="page_template">
-            <div class='header'>ЗУ<hr></div>
+            <div class='header'>ЗУ</div>
             <div class='content'></div>
-            <div class='footer'><hr><span>Страница: </span></div>
+            <div class='footer'><span>Страница: </span></div>
         </div>
         <div id="data"></div>
     </body>
