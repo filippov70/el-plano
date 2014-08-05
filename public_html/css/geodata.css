@@ -25,7 +25,16 @@ THE SOFTWARE.
     Created on : Aug 1, 2014, 6:01:06 PM
     Author     : filippov
 */
+table {
+    border-collapse: collapse;
+    font-size: 10px;
+    margin: 3px;
+}
 
+tr, td {
+    border: 1px solid black;
+    text-align: center;
+}
 
 .page {
     border: 1px solid black;

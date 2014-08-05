@@ -27,12 +27,12 @@ THE SOFTWARE.
         <title>Геоданные</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="geodata.css" rel="stylesheet" type="text/css"/>
-        
+        <link href="css/geodata.css" rel="stylesheet" type="text/css"/>
+        <script src="js/jquery/jquery.js" type="text/javascript"></script>
         <script src="js/columnizer/jquery.columnizer.js" type="text/javascript"></script>
-        <script src="js/columnizer/jquery.js" type="text/javascript"></script>
-        <script>
+        <script type="text/javascript">
             $(function(){
+                //http://welcome.totheinter.net/2009/06/18/dynamic-multi-page-multi-column-newsletter-layout-with-columnizer/
                 // the height of the content, discluding the header/footer
                 var content_height = 652;
                 // the beginning page number to show in the footer
@@ -47,7 +47,6 @@ THE SOFTWARE.
                         $page.find(".footer span").append(page);
                         $('body').append($page);
                         page++;
-
                         // here is the columnizer magic
                         $('#data').columnize({
                             columns: 2,
@@ -69,12 +68,12 @@ THE SOFTWARE.
     </head>
     <body>
        <div class="tools">
-            <button onclick="buildPage()">Go!</button>
+<!--            <button onclick="buildPage()">Go!</button>-->
         </div>
         <div id="page_template">
-            <div class='header'>ЗУ</div>
+            <div class='header'>Геоданные</div>
             <div class='content'></div>
-            <div class='footer'><span>Страница: </span></div>
+            <div class='footer'><span>Лист: </span></div>
         </div>
         <div id="data"></div>
     </body>

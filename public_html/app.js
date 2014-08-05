@@ -168,8 +168,8 @@ function parseLinearRing(index, ring) {
     log('Обрабатывается контур ' + (index + 1));
     var data1 = [];
     var data2 = [];
-    var geodata = [];
-    var geodataExp = [];
+    var geodata1 = [];
+    var geodata2 = [];
     var firstPointName = ++pointNumber;
     var prefix = 'н';
 
@@ -179,30 +179,39 @@ function parseLinearRing(index, ring) {
         data1.push('—');
         data1.push('—');
         data1.push('—');
+        
+        geodata1.push('—');
+        geodata1.push('—');
+        geodata1.push('—');
         createTableData(data1, data2);
+        createGeodata(geodata1, geodata2);
+        geodata1 = [];
         data1 = [];
         firstPointName = --pointNumber;
     }
     for (var i = 0; i < ring.length; i++) { 
         if (i < ring.length-1) {
             data1.push(prefix + pointNumber);
-            geodata.push(prefix + pointNumber);
+            geodata1.push(prefix + pointNumber);
             ++pointNumber;
         }
         else {
             data1.push(prefix + firstPointName);
-            geodata.push(prefix + firstPointName);
+            geodata1.push(prefix + firstPointName);
         }
         data1.push(ring[i][0]);
         data1.push(ring[i][1]);
         data1.push(' ');
         data1.push(' ');
+        geodata1.push(' ');
+        geodata1.push(' ');
 
         if (i < ring.length-1) {
             data2.push(' ');
             data2.push(' ');
             data2.push(' ');
-            geodata.push(getDirectionalAngle(
+            geodata2.push('');
+            geodata2.push(getDirectionalAngle(
                 {
                     x: ring[i + 1][0],
                     y: ring[i + 1][1]
@@ -220,7 +229,7 @@ function parseLinearRing(index, ring) {
                     x: ring[i][0],
                     y: ring[i][1]
                 }));
-            geodata.push(getLenth(
+            geodata2.push(getLenth(
                 {
                     x: ring[i + 1][0],
                     y: ring[i + 1][1]
@@ -240,10 +249,11 @@ function parseLinearRing(index, ring) {
                 }));
         }
         createTableData(data1, data2);
-        createGeodata(geodata);
+        createGeodata(geodata1, geodata2);
         data1 = [];
         data2 = [];
-        geodata = [];
+        geodata1 = [];
+        geodata2 = [];
     }
 }
 
@@ -342,11 +352,19 @@ function createGeodataHeader() {
     geodataTable.append(header);
 }
 
-function createGeodata(geodata) {
-    var row1 = $('<tr/>');
-    row1.addClass('geodata-table-row');
-    row1.append($('<td/>').html('<span>' + geodata[0] + '</span>'));
-    row1.append($('<td/>').html('<span>' + geodata[1] + '</span>'));
-    row1.append($('<td/>').html('<span>' + geodata[2] + '</span>'));
-    geodataTable.append(row1);
+function createGeodata(geodata1, geodata2) {
+    var row = $('<tr/>');
+    row.addClass('coord-table-row');
+    row.append($('<td/>').html('<span>' + geodata1[0] + '</span>'));
+    row.append($('<td/>').html('<span>' + geodata1[1] + '</span>'));
+    row.append($('<td/>').html('<span>' + geodata1[2] + '</spanp>'));
+    geodataTable.append(row);
+    if (geodata2 && geodata2.length > 0) {
+        var row1 = $('<tr/>');
+        row1.addClass('coord-table-row');
+        row1.append($('<td/>').html('<span>' + geodata2[0] + '</span>'));
+        row1.append($('<td/>').html('<span>' + geodata2[1] + '</span>'));
+        row1.append($('<td/>').html('<span>' + geodata2[2] + '</span>'));
+        geodataTable.append(row1);
+    }
 }
