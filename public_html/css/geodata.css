@@ -38,10 +38,10 @@ tr, td {
 
 .page {
     border: 1px solid black;
-    height: 792px;
-    margin: 20px;
+    /* height: 290mm; */
+    margin: 5px;
     position: relative;
-    width: 612px;
+    width: 410mm;
 }
 .page .content .column {
     font-size: 10pt;

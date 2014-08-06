@@ -34,6 +34,7 @@ function log(msg) {
 
 function createGeodataRepoprt() {
     prepare();
+ 
     var geodataReport = window.open('geodata.html', 'Geodata');
     //var report = window.open('coordreport.html', 'Report');
     geodataReport.onload = function () {
@@ -41,38 +42,6 @@ function createGeodataRepoprt() {
         //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
         var data = $('#data', geodataReport.document);
         data.html('<table>' + newtable + '</table>');
-//        // the height of the content, discluding the header/footer
-//        var content_height = 652;
-//        // the beginning page number to show in the footer
-//        var page = 1;
-//        function buildPage(){
-//            if($('#data', geodataReport.document).contents().length > 0){
-//                // when we need to add a new page, use a jq object for a template
-//                // or use a long HTML string, whatever your preference
-//                $page = $("#page_template", geodataReport.document).clone().addClass("page").css("display", "block");
-//
-//                // append the page number to the footer
-//                $page.find(".footer span").append(page);
-//                $('body', geodataReport.document).append($page);
-//                page++;
-//
-//                // here is the columnizer magic
-//                $('#data', geodataReport.document).columnize({
-//                    columns: 2,
-//                    target: ".page:last .content",
-//                    overflow: {
-//                        height: content_height,
-//                        id: "#data",
-//                        doneFunc: function(){
-//                            console.log("done with page");
-//                            buildPage();
-//                        }
-//                    }
-//                });
-//            }
-//        }
-//        buildPage();
-        //return false;
     };
     geodataReport.focus();
 }
@@ -111,34 +80,6 @@ function parseWKT() {
     table = $('<table></table>');
     geodataTable = $('<table></table>');
     parseGeom();
-//    var newLink = $(this).find('a');
-//    newLink.attr('target', '_blank');
-    //var report = window.open('coordreport.html', 'Report'); 
-    
-    //http://javascript.ru/forum/jquery/5158-manipulyacii-vnutri-sozdannogo-okna-s-pomoshyu-jquery.html
-//    (function() {
-//            if(report.ready) {
-//                var newtable = table.html();
-//                report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
-//            } else {
-//                    setTimeout(arguments.callee, 20);
-//            }
-//    })();
-//    report.onload = function () {
-//        var newtable = table.html();
-//        //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
-//        var data = $('#coord', report.document);
-//        data.html('<table>' + newtable + '</table>');
-//        return false;
-//    };
-    
-//    $(report.document).ready(function(){
-//        var newtable = table.html();
-//        report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';  
-//    });
-    //report.focus();
-    
-    //$('.coord-report').toggleClass('hide');
 }
 
 function parseGeom() {
