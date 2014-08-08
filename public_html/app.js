@@ -25,7 +25,9 @@
 var logger = null;
 var geom = null;
 var table = null;
+var tableArr = [];
 var geodataTable = null;
+var geodataTableArr = [];
 var pointNumber = 0;
 
 function log(msg) {
@@ -34,55 +36,50 @@ function log(msg) {
 
 function createGeodataRepoprt() {
     prepare();
- 
+    var newtable = '';
+    for(var i=0; i < geodataTableArr.length; i++) {
+        newtable += '<table>' + $(geodataTableArr[i]).html() + '</table><hr>';
+    }
     var geodataReport = window.open('geodata.html', 'Geodata');
-    //var report = window.open('coordreport.html', 'Report');
     geodataReport.onload = function () {
-        var newtable = geodataTable.html();
-        //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
         var data = $('#data', geodataReport.document);
-        data.html('<table>' + newtable + '</table>');
+        data.html(newtable);
     };
     geodataReport.focus();
 }
 
 function createReport() {
     prepare();
+    var newtable = '';
+    for(var i=0; i < tableArr.length; i++) {
+        newtable += '<table>' + $(tableArr[i]).html() + '</table><hr>';
+    }
     var report = window.open('coordreport.html', 'Report');
     report.onload = function () {
-        var newtable = table.html();
         //report.document.getElementById('coord').innerHTML = '<table>' + newtable + '</table>';
         var data = $('#coord', report.document);
-        data.html('<table>' + newtable + '</table>');
+        data.html(newtable);
         return false;
     };
     report.focus();
 }
 
 function prepare() {
+    // Разделитель - пустая строка \n\n
     var format = new ol.format.WKT();
-    var shape = format.readGeometry($('.coord-area')[0].textContent);
-    geom = shape;
-    log('Площадь объекта: ' + shape.getArea().toFixed(2));
-    table = $('<table></table>');
-    geodataTable = $('<table></table>');
-    //var geodataReport = window.open('geodata.html', 'Geodata');
-    parseGeom();
+    geodataTable = [];
+    tableArr = [];
+    var parcels = $('.coord-area')[0].textContent.split('\n\n');
+    for (var i=0; i < parcels.length; i++) {
+        shape = format.readGeometry(parcels[i]);
+        log('Площадь объекта: ' + shape.getArea().toFixed(2));
+        table = $('<table></table>');
+        geodataTable = $('<table></table>');
+        parseGeom(shape);
+    }
 }
 
-// depricated
-function parseWKT() {
-    var format = new ol.format.WKT();
-    var shape = format.readGeometry($('.coord-area')[0].textContent);
-    geom = shape;
-
-    log('Площадь объекта: ' + shape.getArea().toFixed(2));
-    table = $('<table></table>');
-    geodataTable = $('<table></table>');
-    parseGeom();
-}
-
-function parseGeom() {
+function parseGeom(geom) {
     if (geom.getType() === 'Polygon') {
         log('"Геометрия ol.geom.Polygon"');
         
@@ -94,7 +91,8 @@ function parseGeom() {
         $.each(coords, function(idx, val) {
             parseLinearRing(idx, val);
         });
-        //return table.html();
+        tableArr.push(table);
+        geodataTableArr.push(geodataTable);
     }
     else if (geom.getType() === 'MutliPolgon') {
         log('Геометрия ol.geom.MutliPolgon');
