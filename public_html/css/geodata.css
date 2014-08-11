@@ -88,3 +88,6 @@ tr, td {
 .enclosure {
     border: 1px dashed black;
 }
+.hide {
+  display: none;
+}

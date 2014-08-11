@@ -23,11 +23,13 @@
  */
 
 var logger = null;
+var objName = '';
 var geom = null;
 var table = null;
 var tableArr = [];
 var geodataTable = null;
 var geodataTableArr = [];
+var areaArr = [];
 var pointNumber = 0;
 
 function log(msg) {
@@ -38,7 +40,7 @@ function createGeodataRepoprt() {
     prepare();
     var newtable = '';
     for(var i=0; i < geodataTableArr.length; i++) {
-        newtable += '<table>' + $(geodataTableArr[i]).html() + '</table><hr>';
+        newtable += '<table>' + $(geodataTableArr[i]).html() + '</table><span>'+areaArr[i]+' кв.м</span><br><br>';
     }
     var geodataReport = window.open('geodata.html', 'Geodata');
     geodataReport.onload = function () {
@@ -52,7 +54,7 @@ function createReport() {
     prepare();
     var newtable = '';
     for(var i=0; i < tableArr.length; i++) {
-        newtable += '<table>' + $(tableArr[i]).html() + '</table><hr>';
+        newtable += '<table>' + $(tableArr[i]).html() + '</table><span>'+areaArr[i]+' кв.м</span><br><br>';
     }
     var report = window.open('coordreport.html', 'Report');
     report.onload = function () {
@@ -69,12 +71,18 @@ function prepare() {
     var format = new ol.format.WKT();
     geodataTable = [];
     tableArr = [];
+    areaArr = [];
     var parcels = $('.coord-area')[0].textContent.split('\n\n');
     for (var i=0; i < parcels.length; i++) {
-        shape = format.readGeometry(parcels[i]);
+        var data = parcels[i].split('_');
+        objName = data[0];
+        shape = format.readGeometry(data[1]);
+        areaArr.push(shape.getArea().toFixed(2));
         log('Площадь объекта: ' + shape.getArea().toFixed(2));
         table = $('<table></table>');
+        table.prepend('<p>' + objName + '</p>');
         geodataTable = $('<table></table>');
+        geodataTable.prepend('<span>' + objName + '</span>');
         parseGeom(shape);
     }
 }
