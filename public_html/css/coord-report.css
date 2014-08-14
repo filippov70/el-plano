@@ -57,13 +57,4 @@ table {
     position: fixed;
     width: 190mm;
     height: 220mm;
-/*    -webkit-column-count: 4;
-    -webkit-column-gap: 10px; 
-    -webkit-column-rule: 0px dotted black;
-    -moz-column-count: 4;
-    -moz-column-gap: 10px;  
-    -moz-column-rule: 0px dotted black;
-    column-count: 2;
-    column-gap: 10px; 
-    column-rule: 0px dotted black;*/
 }

@@ -31,19 +31,26 @@ var geodataTable = null;
 var geodataTableArr = [];
 var areaArr = [];
 var pointNumber = 0;
+var pageHeight = 0;
+var pageWidth = 0;
 
 function log(msg) {
-    $('.log').val($('.log').val() + '\n' + msg);
+    //$('.log').val($('.log').val() + '\n' + msg);
 }
 
 function createGeodataRepoprt() {
     prepare();
+    pageHeight = $('.pg-height').val();
+    pageWidth = $('.pg-width').val();
     var newtable = '';
     for(var i=0; i < geodataTableArr.length; i++) {
         newtable += '<table>' + $(geodataTableArr[i]).html() + '</table><span>'+areaArr[i]+' кв.м</span><br><br>';
     }
     var geodataReport = window.open('geodata.html', 'Geodata');
+    
     geodataReport.onload = function () {
+        $('#h', geodataReport.document).text(pageHeight);
+        $('#w', geodataReport.document).text(pageWidth);
         var data = $('#data', geodataReport.document);
         data.html(newtable);
     };
@@ -78,7 +85,7 @@ function prepare() {
         objName = data[0];
         shape = format.readGeometry(data[1]);
         areaArr.push(shape.getArea().toFixed(2));
-        log('Площадь объекта: ' + shape.getArea().toFixed(2));
+        //log('Площадь объекта: ' + shape.getArea().toFixed(2));
         table = $('<table></table>');
         table.prepend('<p>' + objName + '</p>');
         geodataTable = $('<table></table>');
@@ -90,8 +97,8 @@ function prepare() {
 function parseGeom(geom) {
     if (geom.getType() === 'Polygon') {
         log('"Геометрия ol.geom.Polygon"');
-        
-        pointNumber = 0;
+        // Сквозная нумерация
+        //pointNumber = 0;
         createTableHeader();
         createGeodataHeader();
         var coords = geom.getCoordinates();

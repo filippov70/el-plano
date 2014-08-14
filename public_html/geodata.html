@@ -36,7 +36,7 @@ THE SOFTWARE.
                 // the height of the content, discluding the header/footer
                 //1 millimeter [mm] = 3.77952755905511 pixel (Y)
                 // page height - content header 
-                var content_height = 910;
+                //var content_height; //910;
                 // the beginning page number to show in the footer
                 var page = 1;
                 function buildPage(){
@@ -44,7 +44,7 @@ THE SOFTWARE.
                         // when we need to add a new page, use a jq object for a template
                         // or use a long HTML string, whatever your preference
                         $page = $('#page_template').clone().addClass('page').css('display', 'block');
-
+                        $page.css('width', $('#w').text() * 3.77952755905511);
                         // append the page number to the footer
                         $page.find('.footer span').append(page);
                         $('body').append($page);
@@ -54,26 +54,28 @@ THE SOFTWARE.
                             columns: 7,
                             target: '.page:last .content',
                             overflow: {
-                                height: content_height,
+                                height: $('#h').text() * 3.77952755905511,
+                                //width: $('#w').text() * 3.77952755905511,
                                 id: '#data',
                                 doneFunc: function(){
                                     console.log("done with page");
+                                    console.log('h ' + $('#h').text());
+                                    console.log('w ' + $('#w').text());
                                     buildPage();
                                 }
                             }
                         });
                     }
                 }
-                setTimeout(buildPage, 3000);
+                setTimeout(buildPage, 1000);
 		});
         </script>
     </head>
     <body>
-       <div class="tools">
-<!--            <button onclick="buildPage()">Go!</button>-->
-        </div>
         <div id="page_template">
-            <div class='header'></div>
+            <label id="h" class="hide"></label>
+            <label id="w" class="hide"></label>
+<!--            <div class='header'></div>-->
             <div class='content'></div>
             <div class='footer'><span>Лист: </span></div>
         </div>
