@@ -44,8 +44,8 @@ function createGeodataRepoprt() {
     prepare();
     pageHeight = $('.pg-height').val();
     pageWidth = $('.pg-width').val();
-    $('#svg').css('width:', pageHeight);
-    $('#svg').css('height:' + pageHeight);
+    $('#svg').css('width', pageHeight);
+    $('#svg').css('height', pageHeight);
     paper.rect(0, 0, pageHeight, pageWidth).attr({
         fill: "#bada55",
         stroke: "#000",
