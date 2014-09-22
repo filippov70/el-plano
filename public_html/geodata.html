@@ -51,8 +51,10 @@ THE SOFTWARE.
                         page++;
                         // here is the columnizer magic
                         $('#data').columnize({
-                            columns: 7,
+                            columns: 8,
                             target: '.page:last .content',
+                            lastNeverTallest: false,
+                            buildOnce: true,
                             overflow: {
                                 height: $('#h').text() * 3.77952755905511,
                                 //width: $('#w').text() * 3.77952755905511,

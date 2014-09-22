@@ -33,26 +33,37 @@ var areaArr = [];
 var pointNumber = 0;
 var pageHeight = 0;
 var pageWidth = 0;
+var paper;
 
 function log(msg) {
     //$('.log').val($('.log').val() + '\n' + msg);
 }
 
 function createGeodataRepoprt() {
+    paper = Snap("#svg");
     prepare();
     pageHeight = $('.pg-height').val();
     pageWidth = $('.pg-width').val();
+    $('#svg').css('width:', pageHeight);
+    $('#svg').css('height:' + pageHeight);
+    paper.rect(0, 0, pageHeight, pageWidth).attr({
+        fill: "#bada55",
+        stroke: "#000",
+        strokeWidth: 5
+    });
+    
     var newtable = '';
     for(var i=0; i < geodataTableArr.length; i++) {
         newtable += '<table>' + $(geodataTableArr[i]).html() + '</table><span>'+areaArr[i]+' кв.м</span><br><br>';
     }
-    var geodataReport = window.open('geodata.html', 'Geodata');
+    var geodataReport = window.open('geodata-svg.html', 'Geodata');
     
     geodataReport.onload = function () {
-        $('#h', geodataReport.document).text(pageHeight);
-        $('#w', geodataReport.document).text(pageWidth);
+//        $('#h', geodataReport.document).text(pageHeight);
+//        $('#w', geodataReport.document).text(pageWidth);
         var data = $('#data', geodataReport.document);
-        data.html(newtable);
+        //data.html(newtable);
+        data.html($('#svg').toggleClass('hidden'));
     };
     geodataReport.focus();
 }

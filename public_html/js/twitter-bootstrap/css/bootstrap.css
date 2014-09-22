@@ -87,7 +87,7 @@ img {
   border: 0;
 }
 svg:not(:root) {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 figure {
   margin: 1em 40px;
@@ -5981,8 +5981,8 @@ button.close {
   border: 0;
 }
 .hidden {
-  display: none !important;
-  visibility: hidden !important;
+  /* display: none !important; */
+  /* visibility: hidden !important; */
 }
 .affix {
   position: fixed;
