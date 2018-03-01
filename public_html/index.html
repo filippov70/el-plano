@@ -30,20 +30,21 @@
         <link href="css/elplano.css" rel="stylesheet" type="text/css"/>
         <link href="js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
         
-        <script src="js/jquery/jquery.js" type="text/javascript"></script>
+        <script src="js/jquery-3.3.1.slim.min.js" type="text/javascript"></script>
         <script src="js/bootstrap/js/bootstrap.js" type="text/javascript"></script>
         <script src="js/proj4.js" type="text/javascript"></script>
         <script src="app.js" type="text/javascript"></script>
     </head>
 
     <body>
-<!--        <div class="page-header">
-            <h3>Автоматизация землеустройства</h3>
-        </div>-->
-<svg id="svg" class="hidden" style="width: 0; height: 0"></svg>
+        <div class="page-header">
+            <h3 style="text-align: center">Автоматизация землеустройства и кадастровых работ</h3>
+            <h4 style="text-align: center">Генератор ведомостей - Vertex</h4>
+        </div>
+        
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="well">
+<!--                <div class="well">
                     <div class="panel panel-primary">
                         <div class="panel-heading">Данные об объекте (имя_координаты в WKT)</div>
                         <div class="panel-body">
@@ -55,8 +56,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="well">
+                </div>-->
+<!--                <div class="well">
                     <div class="panel panel-primary">
                         <div class="panel-heading">Размер страницы Геоданных</div>
                         <div class="panel-body">
@@ -73,16 +74,29 @@
                                 <option>420</option>
                             </select>
                         </div>
+                    </div>-->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Загрузить исходных данных</div>
+                        <div class="panel-body">
+                            <button class="btn btn-success"  onclick="loadVertexData()">Загрузить файл из Vertex QGIS...</button>
+             
+                        </div>
                     </div>
                     <div class="panel panel-primary">
                         <div class="panel-heading">Создать</div>
                         <div class="panel-body">
-                            <button class="btn btn-success"  onclick="createReport()">ведомость</button>
-                            <button class="btn btn-primary"  onclick="createGeodataRepoprt()">геоданные</button>
+                            <button class="btn btn-success hidden"  onclick="createReport()">Ведомость (N,X,Y,Dir,L)</button>
+                            <button class="btn btn-primary hidden"  onclick="createGeodataRepoprt()">Ведомость (N,X,Y,Lat,Lon,Dir,L)</button>
                         </div>
                     </div> 
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Карта</div>
+                        <div class="panel-body hidden">
+                           
+                        </div>
+                    </div>
                 </div> 
             </div>
-        </div>
+<!--        </div>-->
     </body>
 </html>
