@@ -35,9 +35,7 @@ var pageHeight = 0;
 var pageWidth = 0;
 var paper;
 
-function log(msg) {
-    //$('.log').val($('.log').val() + '\n' + msg);
-}
+
 
 function createGeodataRepoprt() {
     paper = Snap("#svg");
