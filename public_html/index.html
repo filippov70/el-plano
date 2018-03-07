@@ -33,10 +33,11 @@
         <script src="js/jquery-3.3.1.slim.min.js" type="text/javascript"></script>
         <script src="js/bootstrap/js/bootstrap.js" type="text/javascript"></script>
         <script src="js/proj4.js" type="text/javascript"></script>
+        <script src="msk.js" type="text/javascript"></script>
         <script src="app.js" type="text/javascript"></script>
     </head>
 
-    <body>
+    <body onload="initProj()">
         <div class="page-header">
             <h3 style="text-align: center">Автоматизация землеустройства и кадастровых работ</h3>
             <h4 style="text-align: center">Генератор ведомостей - Vertex</h4>
@@ -78,8 +79,9 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading">Загрузить исходных данных</div>
                         <div class="panel-body">
+                            <select class="panel-success" name="crs" id="crs" onchange="updateCrs()"><option value="" selected="selected">Выбор системы координат</option></select>
                             <button class="btn btn-success"  onclick="loadVertexData()">Загрузить файл из Vertex QGIS...</button>
-             
+                            
                         </div>
                     </div>
                     <div class="panel panel-primary">

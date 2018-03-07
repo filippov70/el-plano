@@ -1,7 +1,7 @@
 /* 
  * The MIT License
  *
- * Copyright 2014 filippov.
+ * Copyright 2018 filippov.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,22 @@ var pointNumber = 0;
 var pageHeight = 0;
 var pageWidth = 0;
 var paper;
+var crs = null;
+var projs = {};
 
+function initProj(){
+    var crsSelect = $('#crs')[0];
+    var selectCrsIdx = 0;
+    for (var def in proj4.defs) {
+        projs[def] = new proj4.defs(def);
+        var label = proj4[def].title;
+        var opt = new Option(label, def);
+        crsSelect.options[selectCrsIdx]= opt;
+        var opt = new Option(label, def);
+        crsSelect.options[selectCrsIdx]= opt;
+        ++selectCrsIdx;
+    }
+}
 
 
 function createGeodataRepoprt() {
